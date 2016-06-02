@@ -34,8 +34,7 @@ declare module SpinnerPlugin {
     interface Options {
 
         /**
-         * True to use a dimmed background which overlays all content and prevents
-         * the user from tapping on any elements.
+         * True to use a dimmed background which overlays all content.
          * 
          * If not provided, defaults to true.
          */
