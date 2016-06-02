@@ -19,23 +19,27 @@ MBProgressHUD *progressIndicator;
 
 - (void)activityStart:(CDVInvokedUrlCommand *)command {
 
+    // Ensure we have the correct number of arguments.
+    if ([command.arguments count] != 2) {
+        CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"A labelText and dimBackground are required."];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        return;
+    }
+
+    // Obtain the arguments.
+    NSString* labelText = [command.arguments objectAtIndex:0];
+    BOOL dimBackground = [[command argumentAtIndex:1] boolValue];
+
     // Ensure any previous dialogs are closed first.
     if (progressIndicator) {
         [progressIndicator hide:YES];
         progressIndicator = nil;
     }
 
-    NSString* labelText;
-
-    // The only parameter is an optional label value.
-    if ([command.arguments count] == 1) {
-        labelText = [command.arguments objectAtIndex:0];
-    }
-
     progressIndicator = nil;
     progressIndicator = [MBProgressHUD showHUDAddedTo:self.webView.superview animated:YES];
     progressIndicator.mode = MBProgressHUDModeIndeterminate;
-    progressIndicator.dimBackground = YES;
+    progressIndicator.dimBackground = dimBackground;
 
     // If an optional label value was provided, use it.
     if (labelText) {

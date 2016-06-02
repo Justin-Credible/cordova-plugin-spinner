@@ -1,7 +1,10 @@
-package net.justincredible;
+package net.justin_credible.cordova;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.graphics.drawable.ColorDrawable;
+
+import net.justin_credible.cordova.FakeR;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -10,7 +13,15 @@ import org.json.JSONException;
 
 public final class SpinnerPlugin extends CordovaPlugin {
 
+    private FakeR R = null;
     private ProgressDialog spinnerDialog = null;
+
+    @Override
+    public void pluginInitialize() {
+        super.pluginInitialize();
+
+        R = new FakeR(this.cordova.getActivity());
+    }
 
     @Override
     public synchronized boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -49,8 +60,15 @@ public final class SpinnerPlugin extends CordovaPlugin {
 
     private synchronized void activityStart(final JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
-        // Ensure there is always a label for display.
-        final String message = args.length() == 1 ? args.getString(0) : "Please Wait...";
+        // Ensure we have the correct number of arguments.
+        if (args.length() != 2) {
+            callbackContext.error("A labelText and dimBackground are required.");
+            return;
+        }
+
+        // Obtain the arguments.
+        final String labelText = args.getString(0);
+        final boolean dimBackground = args.getBoolean(1);
 
         // Ensure any previous dialogs are closed first.
         if (this.spinnerDialog != null) {
@@ -58,15 +76,21 @@ public final class SpinnerPlugin extends CordovaPlugin {
             this.spinnerDialog = null;
         }
 
-        // Use a more modern looking dialog if the platform supports it.
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (dimBackground == false) {
+            // If we aren't dimming the background, we need to use a special theme to hide it.
+            int theme = R.getId("style", "SpinnerPluginTransparentDialog");
+            this.spinnerDialog = new ProgressDialog(this.cordova.getActivity(), theme);
+        }
+        else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            // Use a more modern looking dialog if the platform supports it.
             this.spinnerDialog = new ProgressDialog(this.cordova.getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         }
         else {
+            // Fallback to the platform default.
             this.spinnerDialog = new ProgressDialog(this.cordova.getActivity());
         }
 
-        this.spinnerDialog.setMessage(message);
+        this.spinnerDialog.setMessage(labelText);
         this.spinnerDialog.setIndeterminate(true);
         this.spinnerDialog.setCancelable(false);
         this.spinnerDialog.show();

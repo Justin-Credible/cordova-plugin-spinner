@@ -13,10 +13,11 @@ declare module SpinnerPlugin {
          * An optional label can be shown below the spinner.
          * 
          * @param labelText The optional value to show in a label.
+         * @param options - The optional options object used to customize behavior.
          * @param successCallback The success callback for this asynchronous function.
          * @param failureCallback The failure callback for this asynchronous function; receives an error string.
          */
-        activityStart(labelText?: string, successCallback?: () => void, failureCallback?: (error: string) => void): void;
+        activityStart(labelText?: string, options?: Options, successCallback?: () => void, failureCallback?: (error: string) => void): void;
 
         /**
          * Allows user input by hiding the indeterminate spinner.
@@ -25,6 +26,20 @@ declare module SpinnerPlugin {
          * @param failureCallback The failure callback for this asynchronous function; receives an error string.
          */
         activityStop(successCallback?: () => void, failureCallback?: (error: string) => void): void;
+    }
+
+    /**
+     * The options object used to customize the dialog's behavior.
+     */
+    interface Options {
+
+        /**
+         * True to use a dimmed background which overlays all content and prevents
+         * the user from tapping on any elements.
+         * 
+         * If not provided, defaults to true.
+         */
+        dimBackground?: boolean;
     }
 }
 
