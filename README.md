@@ -30,15 +30,20 @@ Blocks user input using an indeterminate spinner.
 
 Method Signature:
 
-`activityStart(labelText, successCallback, failureCallback)`
+`activityStart(labelText, options, successCallback, failureCallback)`
 
 Parameters:
 
 * `labelText` (string): The (optional) attribute text to use for the spinner label.
+* `options` (object): The (optional) options object used to customize behavior.
+ * `dimBackground` (boolean): True to use a dimmed background which overlays all content. (defaults to true)
 
 Example Usage:
 
-`SpinnerPlugin.activityStart("Loading...");`
+````
+var options = { dimBackground: true };
+SpinnerPlugin.activityStart("Loading...", options);
+````
 
 ## Hide Spinner ##
 
