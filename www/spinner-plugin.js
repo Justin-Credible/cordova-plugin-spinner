@@ -36,6 +36,10 @@ SpinnerPlugin.activityStart = function activityStart(labelText, options, success
 	if (typeof(options.dimBackground) !== "boolean") {
 		options.dimBackground = true;
 	}
+	
+	if ( options.timeout ) {
+		setTimeout( this.activityStop , options.timeout );
+	}
 
 	exec(successCallback, failureCallback, PLUGIN_ID, "activityStart", [labelText, options.dimBackground]);
 };
