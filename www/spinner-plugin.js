@@ -38,7 +38,7 @@ SpinnerPlugin.activityStart = function activityStart(labelText, options, success
 	}
 	
 	if ( options.timeout ) {
-		setTimeout( this.activityStop , options.timeout );
+		setTimeout( this.activityStop, options.timeout );
 	}
 
 	exec(successCallback, failureCallback, PLUGIN_ID, "activityStart", [labelText, options.dimBackground]);
