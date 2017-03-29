@@ -36,7 +36,7 @@ Parameters:
 
 * `labelText` (string): The (optional) attribute text to use for the spinner label.
 * `options` (object): The (optional) options object used to customize behavior.
- * `dimBackground` (boolean): True to use a dimmed background which overlays all content. (defaults to true)
+  * `dimBackground` (boolean): True to use a dimmed background which overlays all content. (defaults to true)
 
 Example Usage:
 
